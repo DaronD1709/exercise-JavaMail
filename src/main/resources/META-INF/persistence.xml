@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<persistence version="3.1"
+             xmlns="https://jakarta.ee/xml/ns/persistence"
+             xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+             xsi:schemaLocation="https://jakarta.ee/xml/ns/persistence
+                                 https://jakarta.ee/xml/ns/persistence/persistence_3_1.xsd">
+
+    <persistence-unit name="emailListPU" transaction-type="RESOURCE_LOCAL">
+        <provider>org.hibernate.jpa.HibernatePersistenceProvider</provider>
+        <class>model.User</class>
+        <exclude-unlisted-classes>false</exclude-unlisted-classes>
+
+        <properties>
+            <!-- Thông tin kết nối. Khi chạy Docker/Render, DBUtil sẽ ghi đè bằng biến môi trường
+                 DB_URL / DB_USER / DB_PASSWORD (nếu có). -->
+            <property name="jakarta.persistence.jdbc.url"
+                      value="jdbc:postgresql://localhost:5432/email_list_jpa_db"/>
+            <property name="jakarta.persistence.jdbc.driver" value="org.postgresql.Driver"/>
+            <property name="jakarta.persistence.jdbc.user" value="darond"/>
+            <property name="jakarta.persistence.jdbc.password" value=""/>
+
+            <!-- Tự tạo bảng từ @Entity nếu chưa có (thêm cột còn thiếu nếu bảng đã có) -->
+            <property name="hibernate.hbm2ddl.auto" value="update"/>
+
+            <!-- In câu SQL mà Hibernate sinh ra (dấu ? là tham số của PreparedStatement) -->
+            <property name="hibernate.show_sql" value="true"/>
+
+            <!-- Số connection tối đa trong pool có sẵn của Hibernate -->
+            <property name="hibernate.connection.pool_size" value="10"/>
+        </properties>
+    </persistence-unit>
+</persistence>
